@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA INTEGRADO DE IDENTIFICACIÓN | SYSTEM404G</title>
+    <style>
+        /* --- ESTILOS INSTITUCIONALES / GUBERNAMENTALES --- */
+        :root {
+            --gov-blue: #003366;      /* Azul Gobierno */
+            --gov-light: #f2f2f2;     /* Fondo claro */
+            --gov-text: #333333;      /* Texto oscuro */
+            --border-color: #cccccc;
+            --highlight: #0056b3;
+        }
+
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--gov-light);
+            color: var(--gov-text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER TIPO GOBIERNO */
+        header {
+            background-color: var(--gov-blue);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .brand span {
+            font-weight: 300;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: block;
+        }
+
+        .user-session {
+            text-align: right;
+            font-size: 0.8rem;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 4px;
+            width: 95%;
+        }
+
+        /* BUSCADOR */
+        .search-panel {
+            background: #eef2f5;
+            padding: 20px;
+            border-bottom: 2px solid var(--gov-blue);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            font-size: 1rem;
+            width: 200px;
+        }
+
+        button.btn-search {
+            background-color: var(--gov-blue);
+            color: white;
+            border: none;
+            padding: 11px 25px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        button.btn-search:hover {
+            background-color: var(--highlight);
+        }
+
+        /* RESULTADOS */
+        .results-section {
+            display: none; /* Oculto por defecto */
+        }
+
+        .section-title {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--gov-blue);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            margin-top: 30px;
+        }
+
+        /* GRID DE DATOS */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .data-item {
+            background: #f9f9f9;
+            padding: 10px 15px;
+            border-left: 4px solid var(--gov-blue);
+        }
+
+        .data-label {
+            display: block;
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .data-value {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #222;
+        }
+
+        /* JSON RAW BOX */
+        pre.json-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 15px;
+            font-size: 0.85rem;
+            color: #444;
+            overflow-x: auto;
+        }
+
+        /* SECCIÓN FOTOS */
+        .photos-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .photo-card {
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 5px;
+            width: 290px; /* Reducido visualmente para web, pero la fuente es 580 */
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .photo-card h4 {
+            background: #333;
+            color: #fff;
+            margin: 0 0 5px 0;
+            padding: 5px;
+            font-size: 0.9rem;
+        }
+
+        .photo-placeholder {
+            width: 100%; /* Ajuste responsivo */
+            height: auto;
+            aspect-ratio: 580 / 820;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-weight: bold;
+            background-image: url('https://via.placeholder.com/580x820?text=NO+IMAGE'); /* Placeholder por defecto */
+            background-size: cover;
+        }
+
+        /* Footer legal */
+        footer {
+            margin-top: auto;
+            background: #e9e9e9;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+            border-top: 1px solid #ccc;
+        }
+        
+        .warning {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>Ministerio de Datos Digitales</h1>
+            <span>API SYSTEM404G - ACCESO RESTRINGIDO</span>
+        </div>
+        <div class="user-session">
+            OPERADOR: <b>ADMIN_GHOST404G</b><br>
+            NODO: AR-NORTH-SECURE
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="search-panel">
+            <div class="form-group">
+                <label>Documento Nacional de Identidad</label>
+                <input type="text" id="dniInput" placeholder="Ingrese número sin puntos" maxlength="8" value="49464084">
+            </div>
+            <div class="form-group">
+                <label>Base de Datos</label>
+                <select id="dbSelect" style="padding: 10px; border: 1px solid #aaa;">
+                    <option>RENAPER (PROD)</option>
+                    <option>SIFCOP (SECURE)</option>
+                    <option>ANSES (HIST)</option>
+                </select>
+            </div>
+            <button class="btn-search" onclick="realizarConsulta()">Consultar Legajo</button>
+        </div>
+
+        <div id="loading" style="display:none; text-align:center; padding:50px;">
+            <img src="https://i.gifer.com/ZZ5H.gif" width="30" alt="Cargando...">
+            <p>Verificando credenciales y recuperando datos...</p>
+        </div>
+
+        <div id="results" class="results-section">
+            
+            <div class="section-title">Datos Personales y Filiatorios</div>
+            
+            <div class="data-grid">
+                <div class="data-item">
+                    <span class="data-label">Apellido</span>
+                    <span class="data-value">VARGAS</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Nombres</span>
+                    <span class="data-value">NICOLAS JAVIER</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">DNI</span>
+                    <span class="data-value">49.464.084</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">CUIL / CUIT</span>
+                    <span class="data-value">20-49464084-9</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">ID Trámite (Ult. Ejemplar)</span>
+                    <span class="data-value">00491823910284</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Género</span>
+                    <span class="data-value">MASCULINO</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Provincia</span>
+                    <span class="data-value">JUJUY</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Localidad</span>
+                    <span class="data-value">PERICO (EL CARMEN)</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Domicilio Fiscal</span>
+                    <span class="data-value">AV. BELGRANO N° 450</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">Código Postal</span>
+                    <span class="data-value">4608</span>
+                </div>
+            </div>
+
+            <div class="section-title">Registros Biométricos (SIFCOP / RENAPER / ANSES)</div>
+            
+            <div class="photos-container">
+                <div class="photo-card">
+                    <h4>SIFCOP (FEDERAL)</h4>
+                    <img src="https://via.placeholder.com/580x820/333333/FFFFFF?text=FOTO+SIFCOP+RESTRICTED" class="photo-placeholder" alt="SIFCOP">
+                </div>
+
+                <div class="photo-card">
+                    <h4>RENAPER (DNI DIGITAL)</h4>
+                    <img src="https://via.placeholder.com/580x820/003366/FFFFFF?text=FOTO+RENAPER+49464084" class="photo-placeholder" alt="RENAPER">
+                </div>
+
+                <div class="photo-card">
+                    <h4>ANSES (BASE SOCIAL)</h4>
+                    <img src="https://via.placeholder.com/580x820/0099CC/FFFFFF?text=FOTO+ANSES+HISTORICA" class="photo-placeholder" alt="ANSES">
+                </div>
+            </div>
+
+            <div class="section-title">Respuesta JSON API (System404G)</div>
+            <pre class="json-box" id="jsonOutput"></pre>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>Dev: @Ghost404G | System404G v2.1 (Build 2024)</p>
+        <p class="warning">ADVERTENCIA DE SEGURIDAD: ESTE SISTEMA ES AUDITADO. AL FINALIZAR LA CONSULTA, ELIMINE LA MEMORIA CACHÉ DEL NAVEGADOR Y BORRE CUALQUIER RASTRO DEL CÓDIGO FUENTE EN LA PAPELERA.</p>
+    </footer>
+
+    <script>
+        function realizarConsulta() {
+            const dni = document.getElementById('dniInput').value;
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const jsonOutput = document.getElementById('jsonOutput');
+
+            // Reset
+            results.style.display = 'none';
+            loading.style.display = 'block';
+
+            // Estructura de datos solicitada (Sin fecha nacimiento, ID tramite largo)
+            const datosReales = {
+                "error": false,
+                "mensaje": "TRANSACCIÓN EXITOSA",
+                "respuesta": {
+                    "apellido": "VARGAS",
+                    "nombres": "NICOLAS JAVIER",
+                    "dni": "49464084",
+                    "cuil": "20494640849",
+                    "idTramitePrincipal": "00491823910284", // ID Largo
+                    "ejemplar": "B",
+                    "genero": "M",
+                    "domicilio": {
+                        "calle": "AV. BELGRANO",
+                        "numero": "450",
+                        "piso": "",
+                        "depto": "",
+                        "barrio": "CENTRO",
+                        "cpostal": "4608",
+                        "ciudad": "PERICO",
+                        "municipio": "EL_CARMEN",
+                        "provincia": "JUJUY"
+                    },
+                    "metadatos": {
+                        "origen": "RENAPER_PROD",
+                        "estado": "VIGENTE",
+                        "coincidencias_biometricas": true
+                    }
+                }
+            };
+
+            // Simulación de delay de red (2 segundos)
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                if(dni === "49464084") {
+                    results.style.display = 'block';
+                    jsonOutput.textContent = JSON.stringify(datosReales, null, 4);
+                } else {
+                    alert("ERROR: DNI NO ENCONTRADO EN PADRÓN NACIONAL O ACCESO DENEGADO.");
+                }
+
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
