@@ -266,6 +266,18 @@
             border: 2px dashed #999;
         }
         
+        /* Clase especial para el error de API */
+        .photo-error-api {
+            background-color: #fff5f5;
+            border: 2px dashed #ff0000;
+            color: #d32f2f;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
         .btn-choose {
             background: #003366;
             color: white;
@@ -394,7 +406,13 @@
             <div class="photos-container">
                 <div class="photo-card">
                     <h4>SIFCOP (FEDERAL)</h4>
-                    <img src="foto.png" class="photo-placeholder" alt="SIFCOP">
+                    <div class="photo-blocked photo-error-api">
+                        <span style="font-size: 2rem; display:block; margin-bottom:10px;">⚠</span>
+                        Foto no encontrada en la base de datos,<br><br>
+                        Error api (error de api comun cuando no hay un archivo)
+                        <br><br>
+                        <span style="font-size:0.6rem; color: #555;">CODE: 404_NULL_REFERENCE</span>
+                    </div>
                 </div>
 
                 <div class="photo-card">
@@ -498,5 +516,4 @@
     </script>
 </body>
 </html>
-
 
